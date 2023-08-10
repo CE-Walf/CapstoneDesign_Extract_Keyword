@@ -2,9 +2,15 @@
 캡스톤 디자인 HDAM 팀 - 어제의 경제 키워드 추출 부분 코드
 
 ver.1
+
 주피터 노트북에서 작업한 내용을 파이썬 파일로 옮겨, 각각의 부분을 임시로 모듈화.
+
+ver. 1.1
+
+Headless Chrome 구현
 
 
 
 코드 참조 : https://excelsior-cjh.tistory.com/93
+
 불용어 참조 : https://raw.githubusercontent.com/yoonkt200/FastCampusDataset/master/korean_stopwords.txt 에 필요없는 불용어 추가

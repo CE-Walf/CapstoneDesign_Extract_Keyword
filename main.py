@@ -1,17 +1,14 @@
 #라이브러리 import
-import requests #html을 가져와 주기위한 라이브러리
-from bs4 import BeautifulSoup # html을 parsing 하기 위한 라이브러리
-import time # time.sleep()을 통한 크롤링 수행
-import numpy as np
-import re
-from datetime import datetime
+import time # time.sleep() for Crawling
+from datetime import datetime # Chect runtime
 
 #셀레니움 관련 라이브러리
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.keys import Keys # Keys.RETURN, Keys.ENTER, Keys.TAB
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager # 웹 드라이버 자동 관리
+from selenium.webdriver.chrome.options import Options # Selenium에 UserAgent, Headless Chrome의 사용을 위해 필요
 
 #GET MODULE
 from crawlingArticle import crawlingContents
@@ -37,9 +34,15 @@ news_index = 0
 # 키워드의 순위를 지정할 리스트
 keyword_dict = dict()
 
-#크롬 드라이버 위치를 입력
+#크롬 드라이버 위치를 입력(리눅스 서버에서 실행시 크롬드라이버 설치 후 그 위치에 경로 설정)
 chromedriver = 'C:/dev_python/Webdriver/chromedriver.exe'
-driver = webdriver.Chrome(service=Service(chromedriver))
+
+# Headless Chrome 옵션 설정
+chrome_options = Options()
+chrome_options.add_argument('--headless')  # Headless 모드 활성화
+chrome_options.add_argument('--disable-gpu')  # GPU 사용 비활성화 (Linux에서 필요한 경우)
+
+driver = webdriver.Chrome(service=Service(chromedriver), options=chrome_options)
 
 print("======= 경제뉴스 크롤링을 시작합니다 =======")
 print("코드 실행 시작 시간 : ", datetime.now())
@@ -60,7 +63,7 @@ while True:
             time.sleep(0.4)
             article_time = time_elem.text
             print(article_time)
-            if article_time == '4시간전':
+            if article_time == '4시간전': #1일전으로 설정
                 escape_flag = True;
                 break;
             try:  # 일반적인 경우(썸네일이 존재할때)
