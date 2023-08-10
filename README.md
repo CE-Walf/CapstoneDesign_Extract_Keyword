@@ -13,8 +13,14 @@ ver. 1.2
 
 불필요한모듈 SumTitleAndContents 제거
 
+ver. 2
+
+고정 키워드 크롤링 코드 추가(통계청-뉴스기반통계검색)
 
 
+
+
+고정 키워드 참조 : http://data.kostat.go.kr/social/keyword/index.do (통계청-뉴스기반통계검색)
 
 코드 참조 : https://excelsior-cjh.tistory.com/93
 

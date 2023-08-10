@@ -17,6 +17,7 @@ from getNounsFromSentences import getNounsInSentences
 from buildWordsGraph import buildWordsGraph
 from getRanks import getRanks
 from keywords import keywords
+from getFixedKeyword import FixedKeywordCrawler
 
 
 # =================== 메인 함수 ======================
@@ -43,8 +44,16 @@ chrome_options.add_argument('--disable-gpu')  # GPU 사용 비활성화 (Linux�
 
 driver = webdriver.Chrome(service=Service(chromedriver), options=chrome_options)
 
-print("======= 경제뉴스 크롤링을 시작합니다 =======")
+#고정 키워드를 크롤링
+print("======= 고정 키워드 크롤링을 시작합니다 =======")
+fixedKeyword = FixedKeywordCrawler()
+print(fixedKeyword)
+print("======= 고정 키워드 크롤링을 마칩니다. =======")
+
+#어제의 일일 키워드 크롤링, 분석
+print("======= 어제의 일일 키워드 크롤링을 시작합니다 =======")
 print("코드 실행 시작 시간 : ", datetime.now())
+
 
 # 반복문 탈출을 위한 flag 설정
 escape_flag = False
