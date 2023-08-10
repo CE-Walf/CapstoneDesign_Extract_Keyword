@@ -1,5 +1,5 @@
 #라이브러리 import
-import time # time.sleep() for Crawling
+import time  # time.sleep() for Crawling
 from datetime import datetime # Chect runtime
 
 #셀레니움 관련 라이브러리
@@ -11,8 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager # 웹 드라이버 자�
 from selenium.webdriver.chrome.options import Options # Selenium에 UserAgent, Headless Chrome의 사용을 위해 필요
 
 #GET MODULE
-from crawlingArticle import crawlingContents
-from sumTitleAndContent import sumTitleAndContent
+from crawlingArticle import crawlingTitleAndContents
 from contentsToSentences import contentsToSentences
 from getNounsFromSentences import getNounsInSentences
 from buildWordsGraph import buildWordsGraph
@@ -74,7 +73,7 @@ while True:
                     j) + ']/dl/dt/a')
             time.sleep(0.4)
             url = article_elem.get_attribute('href')  # select한 기사의 네이버 제휴 url 추출
-            title, content = crawlingContents(url)
+            title, contents = crawlingTitleAndContents(url)
             # ===아예 같은 제목이 존재하는 경우에는 크롤링을 하지 않도록 코드작성 필요===
             for duplicated_index in range(news_index):
                 if news_dict[duplicated_index]['title'] == title:
@@ -85,9 +84,9 @@ while True:
                 continue
             ##===========여기까지========##
 
-            # 제목과 본문을 합친 것을 리스트 형태로
-            news_content = sumTitleAndContent(title, content)
-            sentence = contentsToSentences(news_content)
+            # 제목과 본문을 합친다.
+            news_contents = title + contents
+            sentence = contentsToSentences(news_contents)
             nouns = getNounsInSentences(sentence)
             words_graph, idx2word = buildWordsGraph(nouns)
             word_rank_idx = getRanks(words_graph)
@@ -102,7 +101,7 @@ while True:
                     keyword_dict[keyword] = 1
 
             news_dict[news_index] = {'title': title,
-                                     'content': content,
+                                     'contents': contents,
                                      'keyword': keyword_list}
 
             news_index += 1

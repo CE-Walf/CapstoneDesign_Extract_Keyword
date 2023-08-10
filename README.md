@@ -9,6 +9,11 @@ ver. 1.1
 
 Headless Chrome 구현
 
+ver. 1.2
+
+불필요한모듈 SumTitleAndContents 제거
+
+
 
 
 코드 참조 : https://excelsior-cjh.tistory.com/93
