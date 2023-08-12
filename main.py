@@ -59,6 +59,9 @@ print("코드 실행 시작 시간 : ", datetime.now())
 escape_flag = False
 duplicated_flag = False
 
+# 기사별 명사를 담을 리스트
+noun_list = list()
+
 page = 1
 while True:
     driver.get("https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=101#&date=%2000:00:00&page=" + str(
@@ -121,10 +124,39 @@ while True:
     time.sleep(sleep_sec)
     page += 1
 
-print(keyword_dict)
-sorted_data = sorted(keyword_dict.items(), key=lambda x: x[1], reverse=True)
-for item in sorted_data:
-    print(item[0], item[1])
 
 driver.quit()
+
+print(keyword_dict)
+#많이 나온 순으로 정렬
+sorted_data = sorted(keyword_dict.items(), key=lambda x: x[1], reverse=True)
+
+#어제의 일일 키워드, 워드 클라우드를 사용하기위한 데이터를 담을 리스트
+yesterdayKeyword = list()
+wordcloud_data = list()
+
+#상위 15개만 담기.
+for item in sorted_data:
+    yesterdayKeyword.append(item[0])
+    if len(yesterdayKeyword) == 15:
+        break
+#혹여 고정키워드와 겹치는 경우가 있을경우, 거기서 제거
+for element in fixedKeyword:
+    if element in yesterdayKeyword:
+        yesterdayKeyword.remove(element)
+
+#10개만 추려낸다.
+yesterdayKeyword = yesterdayKeyword[:10]
+
+#워드클라우드 ["부동산" 31] 이런 형태로 30개정도 뽑아, append
+for item in sorted_data:
+    wordcloud_data.append([item[0], item[1]])
+    if len(wordcloud_data) == 30:
+        break
+
+print("===== 어제의 일일 키워드 =====")
+print(yesterdayKeyword)
+print("===== 워드 클라우드 사용 데이터 ====")
+print(wordcloud_data)
+
 print("코드 실행 종료 시각 : ",datetime.now())
