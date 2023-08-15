@@ -1,3 +1,5 @@
+#멀티 프로세싱을 시험해볼 장소입니다.
+
 #라이브러리 import
 import time  # time.sleep() for Crawling
 from datetime import datetime # Chect runtime
