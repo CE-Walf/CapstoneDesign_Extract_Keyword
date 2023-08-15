@@ -7,6 +7,7 @@ from webdriver_manager.chrome import ChromeDriverManager # 웹 드라이버 자�
 from selenium.webdriver.chrome.options import Options # Selenium에 UserAgent, Headless Chrome의 사용을 위해 필요
 
 import time # 동적 크롤링을 위한 time.sleep() 사용
+
 def FixedKeywordCrawler():
     keyword_list = list()
     url = 'http://data.kostat.go.kr/social/keyword/index.do' # 통계정 경제 키워드
