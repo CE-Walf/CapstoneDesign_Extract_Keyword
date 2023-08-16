@@ -1,6 +1,7 @@
 # Import Library
 import time  # time.sleep() for Crawling
 from datetime import datetime # Chect runtime
+from konlpy.tag import Komoran # Komoran 형태소 분석기
 
 # About Selenium
 from selenium import webdriver
@@ -23,9 +24,6 @@ def DayKeywordCrawler():
 
     print("어제의 키워드 크롤링 코드 실행 시작 시간 : ", datetime.now())
 
-    # 헤더 설정 (이게 없으면 동작하지 않음)
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
-
     # 동적 크롤링을 위한 time.sleep, 0.5초로 설정
     sleep_sec = 0.5
 
@@ -38,6 +36,9 @@ def DayKeywordCrawler():
 
     # 뉴스 개수를 세는 변수
     newsCount = 0
+
+    # Komoran 형태소 분석기 사용자 사전 추가
+    komoran = Komoran(userdic='user_dictionary.txt')
 
     #크롬 드라이버 위치를 입력(리눅스 서버에서 실행시 크롬드라이버 설치 후 그 위치에 경로 설정)
     chromedriver = 'C:/dev_python/Webdriver/chromedriver.exe'
@@ -90,7 +91,7 @@ def DayKeywordCrawler():
                 # 제목과 본문을 합친다.
                 news_contents = title + contents
                 sentence = contentsToSentences(news_contents)
-                nouns = getNounsInSentences(sentence)
+                nouns = getNounsInSentences(komoran, sentence)
                 words_graph, idx2word = buildWordsGraph(nouns)
                 word_rank_idx = getRanks(words_graph)
                 sorted_word_rank_idx = sorted(word_rank_idx, key=lambda k: word_rank_idx[k], reverse=True)

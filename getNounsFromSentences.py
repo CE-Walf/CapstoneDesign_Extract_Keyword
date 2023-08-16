@@ -1,6 +1,4 @@
-from konlpy.tag import Komoran
-def getNounsInSentences(sentences):
-    komoran = Komoran()
+def getNounsInSentences(komoran,sentences):
 
     # 불용어제거
     # 헉헉 이후부터는, 육안으로 보아도 키워드가 아닌
