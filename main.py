@@ -28,7 +28,6 @@ print('\n')
 print("======= 어제의 일일 키워드 크롤링을 시작합니다 =======")
 dayKeyword, wordcloudData = DayKeywordCrawler()
 
-
 print("- 어제의 일일 키워드")
 print(dayKeyword)
 print("- 워드 클라우드 사용 데이터")

@@ -4,8 +4,9 @@
 
 # Import Library
 import time  # time.sleep() for Crawling
-import multiprocessing
+import multiprocessing # 다중 프로세스
 import queue
+import threading # 쓰레드
 
 # Use to Selenium
 from selenium import webdriver
@@ -23,16 +24,19 @@ from buildWordsGraph import buildWordsGraph
 from getRanks import getRanks
 from keywords import keywords
 
+# 동적 크롤링을 위한 time.sleep, 0.5초로 설정 (전역변수로 사용하자.)
+sleep_sec = 0.5
+
 #큐 설정
 q_dict = queue.Queue()
 
-def CrawlingWithMultiprocessPool(i):
+#몇개의 기사를 추출한 결과인가
+news_count = 0
+def CrawlingWithThread(range1):
+
     # 헤더 설정 (이게 없으면 크롤링이 동작하지 않음)
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'}
-
-    # 동적 크롤링을 위한 time.sleep, 0.5초로 설정 (전역변수로 사용하자.)
-    sleep_sec = 0.5
 
     # 컨텐츠를 담을 빈 Dictionary, 인덱스
     news_dict = {}
@@ -60,7 +64,7 @@ def CrawlingWithMultiprocessPool(i):
         driver.get("https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=101#&date=%2000:00:00&page=" + str(
             page))  # 경제뉴스 이동
         time.sleep(sleep_sec)
-        for i in range(1, 5):
+        for i in range1:
             for j in range(1, 6):
                 time_elem = driver.find_element(By.XPATH, '//*[@id="section_body"]/ul[' + str(i) + ']/li[' + str(
                     j) + ']/dl/dd/span[3]')
@@ -68,8 +72,8 @@ def CrawlingWithMultiprocessPool(i):
                 article_time = time_elem.text
                 print(article_time)
                 if article_time == '1일전':
-                    escape_flag = True;
-                    break;
+                    escape_flag = True
+                    break
                 try:  # 일반적인 경우(썸네일이 존재할때)
                     article_elem = driver.find_element(By.XPATH, '//*[@id="section_body"]/ul[' + str(i) + ']/li[' + str(
                         j) + ']/dl/dt[2]/a')
@@ -96,7 +100,8 @@ def CrawlingWithMultiprocessPool(i):
                 words_graph, idx2word = buildWordsGraph(nouns)
                 word_rank_idx = getRanks(words_graph)
                 sorted_word_rank_idx = sorted(word_rank_idx, key=lambda k: word_rank_idx[k], reverse=True)
-                keyword_list = keywords()
+                keyword_list = keywords(sorted_word_rank_idx, idx2word)
+                news_count += 1
 
                 # 키워드 순위 측정
                 for keyword in keyword_list:
@@ -117,19 +122,50 @@ def CrawlingWithMultiprocessPool(i):
         time.sleep(sleep_sec)
         page += 1
 
-    q_dict.put(news_dict)
 
     driver.quit()
+    q_dict.put(keyword_dict)
+
 
 def DayKeywordCrawler():
 
-    pool = multiprocessing.Pool(processes=4)  # 4 코어를 이용하여 진행
-    page_range = range(1, 5)
-    pool.map(CrawlingWithMultiprocessPool, page_range)  # 페이지 범위를 적절하게 수정하세요
-    pool.close()
-    pool.join()
+    # pool = multiprocessing.Pool(processes=4)  # 4 코어를 이용하여 진행
+    # page_range = range(1, 5)
+    # pool.map(CrawlingWithMultiprocessPool, page_range)  # 페이지 범위를 적절하게 수정하세요
+    # pool.close()
+    # pool.join()
 
-    return 1,2
+    thread1 = []
+    thread2 = []
+
+    t1 = threading.Thread(target=CrawlingWithThread, args=([1,2],))
+    t2 = threading.Thread(target=CrawlingWithThread, args=([3,4],))
+
+    thread1.append(t1)
+    thread2.append(t2)
+
+    t1.start()
+    t2.start()
+
+    for i, j in zip(thread1, thread2):
+        i.join()
+        j.join()
+
+    keyword_dict = list()
+    keyword_index = 0
+
+    for i in q_dict.queue:
+            keyword_dict.append(i)
+
+
+    sorted_data = sorted(keyword_dict.items(), key=lambda x: x[1], reverse=True)
+    for item in sorted_data:
+        print(item[0], item[1])
+
+    print("분석한 뉴스 기사의 수 : ", news_count)
+
+
+    return keyword_dict, keyword_dict
 #
 #
 #
