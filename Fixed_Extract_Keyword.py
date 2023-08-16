@@ -1,12 +1,15 @@
-#셀레니움 관련 라이브러리
+# About Selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys # Keys.RETURN, Keys.ENTER, Keys.TAB
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By # Search Element
+from selenium.webdriver.chrome.service import Service # Chrome 경로 설정
 from webdriver_manager.chrome import ChromeDriverManager # 웹 드라이버 자동 관리
-from selenium.webdriver.chrome.options import Options # Selenium에 UserAgent, Headless Chrome의 사용을 위해 필요
+from selenium.webdriver.chrome.options import Options # Selenium에 UserAgent, Headless Chrome
 
-import time # 동적 크롤링을 위한 time.sleep() 사용
+# Import Library
+import time # To use time.sleep() (Dynamic Crawling)
+
+# Extract Fixed Keyword (통계청 - 뉴스기반 검색 - 경제 키워드)
 def FixedKeywordCrawler():
     keyword_list = list()
     url = 'http://data.kostat.go.kr/social/keyword/index.do' # 통계정 경제 키워드
