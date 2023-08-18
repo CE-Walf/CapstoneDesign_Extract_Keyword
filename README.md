@@ -33,7 +33,8 @@ ver. 3.1
 komoran 형태소 분석기에 사용자 정의 사전 추가, 키워드 미포함 리스트 추가 
 
 
-
+TEST BRANCH - Multi Thread
+멀티쓰레드 구현
 
 
 
