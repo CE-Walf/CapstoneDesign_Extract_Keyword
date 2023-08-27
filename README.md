@@ -36,8 +36,8 @@ komoran 형태소 분석기에 사용자 정의 사전 추가, 키워드 미포�
 TEST BRANCH - Multi Thread
 멀티쓰레드 구현
 
-
-
+멀티 쓰레드 구현을 main 브랜치에 merge
+ver. 4.0
 고정 키워드 참조 : http://data.kostat.go.kr/social/keyword/index.do (통계청-뉴스기반통계검색)
 
 코드 참조 : https://excelsior-cjh.tistory.com/93
