@@ -41,6 +41,12 @@ ver. 4.0
 멀티 쓰레드 구현을 main 브랜치에 merge
 
 
+ver. 4.1
+
+키워드 추출 소문자의 경우 대문자로 나오게끔 수정
+
+
+
 고정 키워드 참조 : http://data.kostat.go.kr/social/keyword/index.do (통계청-뉴스기반통계검색)
 
 코드 참조 : https://excelsior-cjh.tistory.com/93
